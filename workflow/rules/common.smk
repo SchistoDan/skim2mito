@@ -1,5 +1,6 @@
 import pandas as pd
 import sys
+import os
 from snakemake.utils import min_version
 
 
@@ -68,6 +69,13 @@ def get_seqkit_output(wildcards):
         sample=glob_wildcards(os.path.join(ck_output, "{sample}.fasta")).sample,
     )
 
+def get_minimap_output(wildcards):
+    ck_output = checkpoints.assembled_sequence.get(**wildcards).output[0]
+    return expand(
+        rules.minimap.output,
+        sample=glob_wildcards(os.path.join(ck_output, "{sample}.fasta")).sample,
+    )
+
 def get_blobtools_output(wildcards):
     ck_output = checkpoints.assembled_sequence.get(**wildcards).output[0]
     return expand(
@@ -121,11 +129,20 @@ def get_mafft_filtered_output(wildcards):
     )
 
 
-# config paramter checks
-if go_reference == "go_fetch" and user_email == "user@example_email.com":
-    sys.exit(
-        f"Error: if using go_fetch to download references, please change the example email provided in the config file'"
-    )
+# config parameter checks
+if go_reference == "go_fetch":
+    if user_email == "user@example_email.com" or user_api == "api_key":
+        missing_params = []
+        if user_email == "user@example_email.com":
+            missing_params.append("user_email")
+        if user_api == "api_key":
+            missing_params.append("user_api")
+        
+        sys.exit(
+            f"Error: if using go_fetch to download references, please change the default values for "
+            f"{' and '.join(missing_params)} in the config file or via the command line"
+        )
+
 if go_reference != "go_fetch" and go_reference != "custom":
     sys.exit(f"Error: go_reference must be 'go_fetch' or 'custom'")
 if not isinstance(fastp_dedup, bool):

@@ -10,5 +10,5 @@ rule fastqc_raw_rev:
     resources:
         mem_mb = 1024
     wrapper:
-        "v4.3.0/bio/fastqc"
+        "v7.5.0/bio/fastqc"
 

@@ -1,14 +1,14 @@
 # path to sample sheet csv with columns for ID,forward,reverse,taxid,seed,gene
 samples: config/samples.csv
 
-# user email
+# getorganelle reference (go_fetch, custom)
+go_reference: custom
+
+# user email (required if go_reference is go_fetch)
 user_email: user@example_email.com
 
-# getorganelle reference (go_fetch, custom)
-go_reference: go_fetch
-
-# api for e-utilities 
-user_api: None
+# api for e-utilities (required if go_reference is go_fetch)
+user_api: api_key
 
 # forward adapter
 forward_adapter: AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
