@@ -8,8 +8,5 @@ rule fastqc_qc_fwd:
         extra="--quiet",
     log:
         "logs/fastqc_qc/{sample}_R1.log",
-    threads: 1
-    resources:
-        mem_mb = 1024
     wrapper:
         "v7.5.0/bio/fastqc"

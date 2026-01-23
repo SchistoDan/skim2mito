@@ -1,10 +1,14 @@
 # skim2mito
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![DOI](https://img.shields.io/badge/DOI-10.1101%2F2023.08.11.552985-blue)](https://doi.org/10.1101/2023.08.11.552985)
+
 **skim2mito** is a snakemake pipeline for the batch assembly, annotation, and phylogenetic analysis of mitochondrial genomes from low coverage genome skims. The pipeline was designed to work with sequence data from museum collections. However, it should also work with genome skims from recently collected samples.
 
 ## Contents
  - [Setup](#setup)
  - [Example data](#example-data)
+ - [Example data with SLURM](#example-data-with-slurm)
  - [Example data with go_fetch](#example-data-with-go_fetch)
  - [Input](#input)
  - [Output](#output)
@@ -22,7 +26,7 @@ It is *strongly recommended* to install conda using Mambaforge. See details here
 
 Once conda is installed, you can pull the github repo and set up the base conda environment.
 
-```
+```bash
 # get github repo
 git clone https://github.com/o-william-white/skim2mito
 
@@ -34,12 +38,11 @@ conda env create -n skim2mito_env -f workflow/envs/conda_env.yaml
 
 # set channel priority to avoid warning messages from snakemake
 conda config --set channel_priority strict
-
 ```
 
 If you need to install the conda environment to a specific location, use the following example, where the prefix argument can be updated to include a specific path:
 
-```
+```bash
 conda env create -n skim2mito_env --prefix /your_path/skim2mito_env -f workflow/envs/conda_env.yaml
 ```
 
@@ -54,10 +57,20 @@ conda env create -n skim2mito_env --prefix /your_path/skim2mito_env -f workflow/
 Before you run your own data, it is recommended to run the example datasets provided. This will confirm there are no user-specific issues with the setup and it also installs all the dependencies. The example data includes simulated mitochondrial data from 25 different butterfly species.
 
 To run the example data, use the code below. The first time you run the pipeline, it will take some time to install each of the conda environments, so it is a good time to take a tea break :).
-```
+```bash
 conda activate skim2mito_env
 
-snakemake --cores 4 --use-conda
+snakemake --profile workflow/profiles/test
+```
+
+The resources requested for the test data can be found in the snakemake profile `workflow/profiles/test/config.yaml`. This requires 10G of memory and 4 cores, with the analysis taking approximately three hours. I have purposely tried to keep the memory requirements low so it can be run on most systems. However, the runtime can be improved by adjusting the profile to allow more memory and cores.
+
+## Example data with SLURM
+
+If you have access to High Performance Computing Facilities (HPC) with a job scheduler, you can submit jobs that each rule is submitted as a separate job with resources you can specify. The advantage of this approach is that you often have access to a larger computational resources and many jobs can be run simultaneously. For example, you can submit the test data to a SLURM job scheduler with the following code and it completes in approximately one hour.
+
+```bash
+snakemake --profile workflow/profiles/slurm
 ```
 
 <br/>
@@ -66,7 +79,7 @@ snakemake --cores 4 --use-conda
 </div>
 <br/>
 
-## Using example data with go_fetch
+## Example data with go_fetch
 
 The example data above uses mitochondrial references provided with the test dataset. However, skim2mito can also identify and download reference data using go_fetch.py (https://github.com/o-william-white/go_fetch), a python script which searches NCBI for mitochondrial references and downloads them in the correct format for getorganelle.
 
@@ -77,7 +90,10 @@ You can find how to get an API key for NCBI here https://support.nlm.nih.gov/kbA
 ```
 conda activate skim2mito_env
 
-snakemake --cores 4 --use-conda --config go_reference=go_fetch user_email=user@example_email.com user_api=api_key
+snakemake --cores 4 --use-conda \
+   --config go_reference=go_fetch \
+            user_email=user@example_email.com \
+            user_api=api_key
 ```
 
 ## Input
@@ -85,7 +101,7 @@ snakemake --cores 4 --use-conda --config go_reference=go_fetch user_email=user@e
 Snakemake requires a `config.yaml` and `samples.csv` to define input parameters and sequence data for each sample. 
 
 For the example data provided, the config file is located here `config/config.yaml` and it looks like this:
-```
+```yaml
 # path to sample sheet csv with columns for ID,forward,reverse,taxid,seed,gene
 samples: config/samples.csv
 
@@ -241,7 +257,7 @@ snakemake --cores 4 --use-conda --config user_email=user@example_email.com --omi
 
 The first thing you need to do is generate your own config.yaml and samples.csv files, using the files provided as a template.
 
-GetOrganelle requires reference data in the format of seed and gene reference fasta files. By default the pipeline uses a basic python script called go_fetch.py https://github.com/o-william-white/go_fetch to download and format reference data formatted for GetOrganelle. 
+GetOrganelle requires reference data in the format of seed and gene reference fasta files. You can generate these files yourself, or use go_fetch.py https://github.com/o-william-white/go_fetch to download and format reference data formatted for GetOrganelle.
 
 go_fetch.py works by searching NCBI based on the NCBI taxonomy specified by the taxid column in the samples.csv file. Note that the seed and gene columns in the samples.csv file are only required if you want to provide your own custom GetOrganelle seed and gene reference databases. 
 

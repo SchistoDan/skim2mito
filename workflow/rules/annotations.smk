@@ -14,22 +14,29 @@ rule annotations:
     shell:
         """
         mkdir -p {output}
-        if [ $(grep circular -c {input.fasta}) -eq 1 ] ; then
+        # if the "grep -c" count is 0, it returns an exit code of 1 which causes snakemake to error silently
+        # || true makes grep always return an exit code of 0  
+        circular_count=$(grep -c circular {input.fasta} || true)
+        sequence_count=$(grep -c "^>" {input.fasta} || true)
+        
+        if [ "$circular_count" -eq 1 ] && [ "$sequence_count" -eq 1 ] ; then
             echo Treating mitochondrial sequence as circular &> {log}
             runmitos.py \
                 --input {input.fasta} \
                 --code {params.code} \
                 --outdir results/annotations/{wildcards.sample}/ \
                 --refseqver resources/mitos_db/{params.refseq} \
-                --refdir . &>> {log}
+                --refdir . \
+                --noplots &>> {log}
         else
-            echo Treating mitochndrial sequence as linear &> {log}
+            echo Treating mitochondrial sequence as linear &> {log}
             runmitos.py \
                 --input {input.fasta} \
                 --code {params.code} \
                 --outdir results/annotations/{wildcards.sample}/ \
                 --refseqver resources/mitos_db/{params.refseq} \
                 --refdir . \
-                --linear &>> {log}
+                --linear \
+                --noplots &>> {log}
         fi
         """
