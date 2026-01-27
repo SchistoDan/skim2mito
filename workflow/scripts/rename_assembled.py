@@ -33,11 +33,21 @@ def rename_fasta(fasta, sample_name, output_prefix):
     # open output files
     with (open(f"{output_prefix}.fasta", "w") as new_fasta,
           open(os.path.join(snakemake.output[0], "rename.txt"), "a+") as name_file):
-        # iterate through fasta
+        
+        # count number of sequences with circular in name
+        circular_count = 0
         for contig_number, (name, sequence) in enumerate(fasta):
             if "circular" in name:
+                circular_count += 1       
+        
+        # iterate through fasta
+        for contig_number, (name, sequence) in enumerate(fasta):
+            if "circular" in name and circular_count == 1:
                 # define short name if sequence circular
                 short_name = f"{sample_name}_circular"
+            elif "circular" in name and circular_count > 1:
+                # define short name if multiple circular sequences
+                short_name = f"{sample_name}_circular{contig_number}"
             else:
                 # define short name if contig
                 short_name = f"{sample_name}_contig{contig_number}"
@@ -57,7 +67,7 @@ try:
                           for f in os.listdir(getorganelle_output) if "path_sequence" in f]
         if len(path_sequences) != 0:
             # read fasta
-            fas = read_fasta(path_sequences[0])  # only read the first file
+            fas = list(read_fasta(path_sequences[0]))  # only read the first file
             # rename and write fasta and summary file
             rename_fasta(fas, sample, os.path.join(snakemake.output[0], sample))
 
