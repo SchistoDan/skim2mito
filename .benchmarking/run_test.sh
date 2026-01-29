@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --partition=medium
-#SBATCH --mem=10G
+#SBATCH --mem=16G
 #SBATCH --cpus-per-task=4
 
 source activate skim2mito_env

@@ -63,7 +63,7 @@ conda activate skim2mito_env
 snakemake --profile workflow/profiles/test
 ```
 
-The resources requested for the test data can be found in the snakemake profile `workflow/profiles/test/config.yaml`. This requires 10G of memory and 4 cores, with the analysis taking approximately three hours. I have purposely tried to keep the memory requirements low so it can be run on most systems. However, the runtime can be improved by adjusting the profile to allow more memory and cores.
+The resources requested for the test data can be found in the snakemake profile `workflow/profiles/test/config.yaml`. This requires 16G of memory and 4 cores, with the analysis taking approximately three hours. I have purposely tried to keep the memory requirements low so it can be run on most systems. However, the runtime can be improved by adjusting the profile to allow more memory and cores.
 
 ## Example data with SLURM
 
