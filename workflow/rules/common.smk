@@ -21,11 +21,15 @@ reverse_adapter = config["reverse_adapter"]
 fastp_dedup = config["fastp_dedup"]
 mitos_refseq = config["mitos_refseq"]
 mitos_code = config["mitos_code"]
+kmer_vals = config["kmer_vals"]
 alignment_trim = config["alignment_trim"]
 missing_threshold = config["missing_threshold"]
 outgroup = config["outgroup"]
 plot_height = config["plot_height"]
 plot_width = config["plot_width"]
+
+# output directory
+results_dir = config.get("results_dir", "results")
 
 # read sample data
 if os.path.exists(config["samples"]):
@@ -110,21 +114,21 @@ def get_sucessfully_annotated_samples(wildcards):
 def get_mafft_output(wildcards):
     checkpoint_output = checkpoints.extract_annotated_genes.get(**wildcards).output[0]
     return expand(
-        "results/mafft/{i}.fasta",
+        f"{results_dir}/mafft/{{i}}.fasta",
         i=glob_wildcards(os.path.join(checkpoint_output, "{i}.fasta")).i,
     )
 
 def get_plot_tree_output(wildcards):
     checkpoint_output = checkpoints.extract_annotated_genes.get(**wildcards).output[0]
     return expand(
-        "results/plot_tree/{i}.png",
+        f"{results_dir}/plot_tree/{{i}}.png",
         i=glob_wildcards(os.path.join(checkpoint_output, "{i}.fasta")).i,
     )
 
 def get_mafft_filtered_output(wildcards):
     checkpoint_output = checkpoints.extract_annotated_genes.get(**wildcards).output[0]
     return expand(
-        "results/mafft_filtered/{i}.fasta",
+        f"{results_dir}/mafft_filtered/{{i}}.fasta",
         i=glob_wildcards(os.path.join(checkpoint_output, "{i}.fasta")).i,
     )
 

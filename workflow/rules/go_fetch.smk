@@ -3,12 +3,12 @@ rule go_fetch:
         email=config["user_email"],
         api=config["user_api"],
         target=config["target"],
-        db=config["database"],
-        min=config["gf_min"],
-        max=config["gf_max"]
+		gf_min=config["gf_min"],
+		gf_max=config["gf_max"],
+        results_dir=results_dir,
     output:
-        "results/go_fetch/{taxids}/gene.fasta",
-        "results/go_fetch/{taxids}/seed.fasta",
+        f"{results_dir}/go_fetch/{{taxids}}/gene.fasta",
+        f"{results_dir}/go_fetch/{{taxids}}/seed.fasta",
     log:
         "logs/go_fetch/{taxids}.log",
     conda:
@@ -19,11 +19,11 @@ rule go_fetch:
         """
         python3 workflow/scripts/go_fetch.py \
             --taxonomy {wildcards.taxids} \
-            --target {params.target} \
-            --db {params.db} \
-            --min {params.min}  \
-            --max {params.max} \
-            --output results/go_fetch/{wildcards.taxids} \
+            --target mitochondrion \
+            --db genbank \
+            --min {params.gf_min}  \
+            --max {params.gf_max} \
+            --output {params.results_dir}/go_fetch/{wildcards.taxids} \
             --getorganelle \
             --email {params.email} \
             --api {params.api} \
