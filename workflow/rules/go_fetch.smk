@@ -2,7 +2,6 @@ rule go_fetch:
     params:
         email=config["user_email"],
         api=config["user_api"],
-        target=config["target"],
         gf_min=config["gf_min"],
         gf_max=config["gf_max"],
         results_dir=results_dir,
