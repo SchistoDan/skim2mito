@@ -16,6 +16,8 @@ configfile: "config/config.yaml"
 user_email = config["user_email"]
 go_reference = config["go_reference"]
 user_api = config["user_api"]
+gf_min = config["gf_min"]
+gf_max = config["gf_max"]
 forward_adapter = config["forward_adapter"]
 reverse_adapter = config["reverse_adapter"]
 fastp_dedup = config["fastp_dedup"]
