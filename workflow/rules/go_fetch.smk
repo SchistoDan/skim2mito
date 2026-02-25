@@ -3,8 +3,8 @@ rule go_fetch:
         email=config["user_email"],
         api=config["user_api"],
         target=config["target"],
-		gf_min=config["gf_min"],
-		gf_max=config["gf_max"],
+        gf_min=config["gf_min"],
+        gf_max=config["gf_max"],
         results_dir=results_dir,
     output:
         f"{results_dir}/go_fetch/{{taxids}}/gene.fasta",
