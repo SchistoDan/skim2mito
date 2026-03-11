@@ -228,6 +228,12 @@ def entrez_esearch(input_term, max_retries=5, retry_delay=30):
                 time.sleep(retry_delay)
             else:
                 raise
+        except (urllib.error.URLError, ConnectionError, TimeoutError, OSError) as e:
+            if attempt < max_retries:
+                print(f"   Attempt {attempt}/{max_retries}: {type(e).__name__}: {e}. Retrying in {retry_delay}s...")
+                time.sleep(retry_delay)
+            else:
+                sys.exit(f"Error: esearch failed after {max_retries} attempts. Last error: {e}")
 
 # efetch with retry logic for transient network errors
 def entrez_efetch(id, format, output_directory, max_retries=5, retry_delay=30):
@@ -410,6 +416,9 @@ def recursive_search(taxonomy, lineage, target, db, min_th, max_th, idlist):
                                         dictionary_children[c] = [i]
                                     else:
                                         dictionary_children[c].append(i)
+
+                        # brief pause between child searches to avoid NCBI rate limiting
+                        time.sleep(0.5)
 
                 # subsample dictionary
                 dictionary_children_subsample = subsample(dictionary_children, count_idlist_subsample, args.seed)
