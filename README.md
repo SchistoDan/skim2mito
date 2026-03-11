@@ -28,7 +28,7 @@ Once conda is installed, you can pull the github repo and set up the base conda 
 
 ```bash
 # get github repo
-git clone https://github.com/o-william-white/skim2mito
+git clone https://github.com/SchistoDan/skim2mito
 
 # change dir
 cd skim2mito
