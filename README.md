@@ -34,16 +34,10 @@ git clone https://github.com/SchistoDan/skim2mito
 cd skim2mito
 
 # setup conda env
-conda env create -n skim2mito_env -f workflow/envs/conda_env.yaml
+conda env create -n skim2mito_env -f skim2mito.yaml
 
 # set channel priority to avoid warning messages from snakemake
 conda config --set channel_priority strict
-```
-
-If you need to install the conda environment to a specific location, use the following example, where the prefix argument can be updated to include a specific path:
-
-```bash
-conda env create -n skim2mito_env --prefix /your_path/skim2mito_env -f workflow/envs/conda_env.yaml
 ```
 
 <br/>
