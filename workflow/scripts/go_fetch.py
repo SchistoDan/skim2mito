@@ -107,6 +107,12 @@ def entrez_retry(func, func_name, max_retries=5, retry_delay=20):
                 time.sleep(retry_delay)
             else:
                 sys.exit(f"HTTP Error {e}: {func_name}. Exiting.")
+        except (urllib.error.URLError, ConnectionError, TimeoutError, OSError) as e:
+            if attempt < max_retries:
+                print(f"{type(e).__name__}: {func_name}. Attempt {attempt}/{max_retries}, retrying in {retry_delay}s...")
+                time.sleep(retry_delay)
+            else:
+                sys.exit(f"{type(e).__name__}: {func_name}. Failed after {max_retries} attempts. Exiting.")
 
 # get taxonomic id from scientific name
 def get_taxonomic_id(taxonomy):
@@ -167,8 +173,10 @@ def get_lineage(taxid):
 #assert get_lineage(3701) == ["Camelineae", "Brassicaceae", "Brassicales", "malvids", "rosids", "Pentapetalae", "Gunneridae", "eudicotyledons", "Mesangiospermae", "Magnoliopsida", "Spermatophyta", "Euphyllophyta", "Tracheophyta", "Embryophyta", "Streptophytina", "Streptophyta", "Viridiplantae", "Eukaryota", "cellular organisms"]
 
 def get_children(taxonomy):
-    handle = Entrez.esearch(db="taxonomy", term=f"{taxonomy}[next level]", retmax=9999)
-    record = Entrez.read(handle)
+    def _fetch():
+        handle = Entrez.esearch(db="taxonomy", term=f"{taxonomy}[next level]", retmax=9999)
+        return Entrez.read(handle)
+    record = entrez_retry(_fetch, "get_children")
     children = []
     print(f"Found {len(record['IdList'])} children")
     if len(record['IdList']) > 10: 
