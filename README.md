@@ -1,4 +1,4 @@
-# skim2mito
+# skim2mito (with modifications for museomics & QoL)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![DOI](https://img.shields.io/badge/DOI-10.1101%2F2023.08.11.552985-blue)](https://doi.org/10.1111/1755-0998.14036)
