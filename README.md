@@ -34,7 +34,7 @@ git clone https://github.com/SchistoDan/skim2mito
 cd skim2mito
 
 # setup conda env
-conda env create -n skim2mito_env -f skim2mito.yaml
+conda env create -n skim2mito -f skim2mito.yaml
 
 # set channel priority to avoid warning messages from snakemake
 conda config --set channel_priority strict
