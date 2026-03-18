@@ -94,50 +94,7 @@ snakemake --cores 4 --use-conda \
 
 Snakemake requires a `config.yaml` and `samples.csv` to define input parameters and sequence data for each sample. 
 
-For the example data provided, the config file is located here `config/config.yaml` and it looks like this:
-```yaml
-# path to sample sheet csv with columns for ID,forward,reverse,taxid,seed,gene
-samples: config/samples.csv
-
-# getorganelle reference (go_fetch, custom)
-go_reference: custom
-
-# user email (required if go_reference is go_fetch)
-user_email: user@example_email.com
-
-# api for e-utilities (required if go_reference is go_fetch)
-user_api: api_key
-
-# forward adapter
-forward_adapter: AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
-
-# reverse adapter
-reverse_adapter: AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
-
-# fastp deduplication (True/False)
-fastp_dedup: True
-
-# mitos refseq database (refseq39, refseq63f, refseq63m, refseq63o, refseq89f, refseq89m, refseq89o)
-mitos_refseq: refseq39
-
-# mito code (2 = Vertebrate, 4 = Mold, 5 = Invertebrate, 9 = Echinoderm, 13 = Ascidian, 14 = Alternative flatworm)
-mitos_code: 5
-
-# alignment trimming method to use (gblocks or clipkit)
-alignment_trim: gblocks
-
-# alignment missing data threshold for alignment (0.0 - 1.0)
-missing_threshold: 0.5
-
-# name of outgroup sample (optional)
-# use "NA" if there is no obvious outgroup
-# if more than one outgroup use a comma separated list i.e. "sampleA,sampleB"
-outgroup: Eurema_blanda
-
-# plot dimensions (cm)
-plot_height: 20
-plot_width: 20
-```
+The config file is located here `config/config.yaml`
 
 The example samples.csv file is located here `config/samples.csv` and it looks like this (note that the seed and gene columns are only required if the custom getorganelle database option is specified in the config file):
 
