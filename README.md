@@ -2,19 +2,14 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**skim2mito** is a snakemake pipeline for the batch assembly, annotation, and phylogenetic analysis of mitochondrial genomes from low coverage genome skims. The pipeline was designed to work with sequence data from museum collections. However, it should also work with genome skims from recently collected samples.
+**skim2mito** is a snakemake pipeline for the batch assembly, annotation, and phylogenetic analysis of mitochondrial genomes from low-coverage genome skims. The pipeline was designed to work with sequence data from museum collections. This fork includes numerous QoL, configurability, and museomics enhancements. It also contains a supplementary `filter_mitogenes.py` script that can be run after the pipeline to extract and validate gene annotations to ensure high quality.
 
 ## Contents
  - [Setup](#setup)
  - [Example data](#example-data)
- - [Example data with SLURM](#example-data-with-slurm)
- - [Example data with go_fetch](#example-data-with-go_fetch)
  - [Input](#input)
  - [Output](#output)
- - [Filtering contaminants](#filtering-contaminants)
- - [Assembly and annotation only](#assembly-and-annotation-only)
  - [Running your own data](#running-your-own-data)
- - [Getting help](#getting-help)
  - [Citations](#citations)
 
 ## Setup
