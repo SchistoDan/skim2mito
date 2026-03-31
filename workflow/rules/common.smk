@@ -165,8 +165,8 @@ if mitos_refseq not in [
     sys.exit(
         "Error: mitos_refseq must be one of 'refseq39', 'refseq63f', 'refseq63m', 'refseq63o', 'refseq89f', 'refseq89m', 'refseq89o'"
     )
-if mitos_code not in [2, 4, 5, 9, 13, 14]:
-    sys.exit("Error: mitos_code must be one of 2, 4, 5, 9, 13, 14")
+if mitos_code not in [2, 4, 5, 9, 13, 14, 16]:
+    sys.exit("Error: mitos_code must be one of 2, 4, 5, 9, 13, 14, 16")
 if (
     not isinstance(missing_threshold, float)
     or missing_threshold < 0.0
